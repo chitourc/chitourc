@@ -1,14 +1,20 @@
-export interface ContentBlock {
-  text_sharii: string;
-  tarbawi_psych: string;
-  science_experience: string;
-  tactile_tip: string;
+export enum SectionType {
+  Sharii = 'sharii',
+  Tarbawi = 'tarbawi',
+  Science = 'science',
+  Tactile = 'tactile',
+}
+
+export interface Section {
+  id: SectionType;
+  title: string;
+  content: string;
 }
 
 export interface Card {
   card_id: string;
   title: string;
-  content_blocks: ContentBlock;
+  sections: Section[];
 }
 
 export interface Exercise {

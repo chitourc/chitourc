@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { UserProgress, UnitProgress } from '../types';
+import type { UserProgress, UnitProgress, Unit, Level } from '../types';
 import { appData } from '../data/content';
 
 const isSameDay = (date1: Date, date2: Date): boolean => {
@@ -8,6 +8,16 @@ const isSameDay = (date1: Date, date2: Date): boolean => {
     date1.getMonth() === date2.getMonth() &&
     date1.getDate() === date2.getDate()
   );
+};
+
+const findUnitById = (unitId: number): Unit | null => {
+    for (const level of appData.levels) {
+        const unit = level.units.find(u => u.unit_id === unitId);
+        if (unit) {
+            return unit;
+        }
+    }
+    return null;
 };
 
 export const useProgress = () => {
@@ -97,7 +107,7 @@ export const useProgress = () => {
         setStreak({ count: 1, lastDate: today.toISOString() });
       }
     }
-  }, [streak]);
+  }, [streak, setStreak]);
 
   const getUnitProgress = useCallback((unitId: number): UnitProgress => {
     return progress[unitId] || {
@@ -135,7 +145,7 @@ export const useProgress = () => {
   const claimReward = useCallback((unitId: number) => {
     const unitProgress = getUnitProgress(unitId);
     if (!unitProgress.rewardClaimed) {
-      const unit = appData.levels.find(l => l.level_id === 1)?.units.find(u => u.unit_id === unitId);
+      const unit = findUnitById(unitId);
       if (unit) {
         setProgress(prev => ({
           ...prev,
@@ -146,18 +156,21 @@ export const useProgress = () => {
     }
   }, [getUnitProgress]);
 
-  const isUnitCompleted = useCallback((unitId: number) => {
-    const unit = appData.levels.find(l => l.level_id === 1)?.units.find(u => u.unit_id === unitId);
+  const isUnitCompleted = useCallback((unit: Unit) => {
     if (!unit) return false;
-    const unitProgress = getUnitProgress(unitId);
+    const unitProgress = getUnitProgress(unit.unit_id);
     const allCardsCompleted = unit.cards.length === 0 || unitProgress.completedCards.size >= unit.cards.length;
     return allCardsCompleted && unitProgress.exerciseCompleted && unitProgress.rewardClaimed;
   }, [getUnitProgress]);
   
-  const completedUnitsCount = useCallback((levelId: number) => {
-      const level = appData.levels.find(l => l.level_id === levelId);
+  const completedUnitsCount = useCallback((level: Level) => {
       if (!level) return 0;
-      return level.units.filter(u => isUnitCompleted(u.unit_id)).length;
+      return level.units.filter(u => isUnitCompleted(u)).length;
+  }, [isUnitCompleted]);
+
+  const isLevelCompleted = useCallback((level: Level) => {
+    if (!level || level.units.length === 0) return false;
+    return level.units.every(unit => isUnitCompleted(unit));
   }, [isUnitCompleted]);
 
   return {
@@ -170,6 +183,7 @@ export const useProgress = () => {
     completeExercise,
     claimReward,
     isUnitCompleted,
+    isLevelCompleted,
     completedUnitsCount
   };
 };
