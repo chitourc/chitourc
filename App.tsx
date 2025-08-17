@@ -15,7 +15,7 @@ const AppHeader: React.FC<{ points: number, streak: number, screen: Screen }> = 
     
     return (
         <header className="fixed top-0 left-0 right-0 z-50 p-4 bg-gradient-to-b from-[#0A192F] to-transparent">
-            <div className="max-w-md mx-auto flex justify-between items-center">
+            <div className="max-w-md md:max-w-2xl lg:max-w-4xl mx-auto flex justify-between items-center">
                 <h1 className="text-2xl font-bold text-gold-royal">رحلتي</h1>
                 <div className="flex items-center gap-4 bg-slate-800/80 backdrop-blur-sm shadow-md rounded-full px-4 py-2 border border-slate-700">
                     <div className="flex items-center gap-1 font-bold text-yellow-300">

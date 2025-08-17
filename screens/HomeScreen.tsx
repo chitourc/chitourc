@@ -67,7 +67,7 @@ const LevelNode: React.FC<{ level: Level; onClick: () => void; completedUnits: n
 const HomeScreen: React.FC<HomeScreenProps> = ({ levels, onSelectLevel, completedUnitsCount }) => {
   return (
     <div className="min-h-screen p-4 sm:p-6 lg:p-8">
-      <main className="max-w-md mx-auto pt-24">
+      <main className="max-w-md md:max-w-2xl lg:max-w-4xl mx-auto pt-24">
         <div className="space-y-12">
           {levels.map((level, index) => (
             <LevelNode 

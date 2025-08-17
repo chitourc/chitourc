@@ -13,38 +13,40 @@ interface LevelScreenProps {
 }
 
 const UnitNode: React.FC<{ unit: Unit; onClick: () => void; isUnlocked: boolean, isCompleted: boolean }> = ({ unit, onClick, isUnlocked, isCompleted }) => {
+  const isClickable = isUnlocked || isCompleted;
+
   return (
     <div
-      onClick={isUnlocked ? onClick : undefined}
+      onClick={isClickable ? onClick : undefined}
       className={`relative flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 transform 
-        ${isUnlocked ? 'cursor-pointer bg-slate-800 shadow-lg hover:shadow-xl hover:-translate-y-1 border-2 border-slate-700 hover:border-gold-royal' : 'bg-slate-800/50 border-2 border-slate-700 opacity-60'}
+        ${isClickable ? 'cursor-pointer bg-slate-800 shadow-lg hover:shadow-xl hover:-translate-y-1 border-2 border-slate-700 hover:border-gold-royal' : 'bg-slate-800/50 border-2 border-slate-700 opacity-60'}
       `}
     >
       <div className={`flex-shrink-0 w-16 h-16 rounded-full border-4 flex items-center justify-center
-        ${!isUnlocked ? 'bg-slate-700 border-slate-600' 
+        ${!isUnlocked && !isCompleted ? 'bg-slate-700 border-slate-600' 
           : isCompleted ? 'bg-slate-700 border-gold-royal' 
           : 'bg-slate-700 border-slate-600'}
       `}>
-        {isUnlocked ? (
+        {isUnlocked || isCompleted ? (
           isCompleted ? <CheckCircleIcon className="w-10 h-10 text-yellow-400" /> : <StarIcon className="w-9 h-9 text-yellow-500" />
         ) : (
           <LockIcon className="w-8 h-8 text-slate-500" />
         )}
       </div>
       <div className="flex-grow">
-        <p className={`text-sm font-semibold ${isUnlocked ? 'text-gold-royal' : 'text-slate-500'}`}>الوحدة {unit.unit_id}</p>
-        <h3 className={`text-lg font-bold leading-tight ${isUnlocked ? 'text-slate-100' : 'text-slate-400'}`}>
+        <p className={`text-sm font-semibold ${isClickable ? 'text-gold-royal' : 'text-slate-500'}`}>الوحدة {unit.unit_id}</p>
+        <h3 className={`text-lg font-bold leading-tight ${isClickable ? 'text-slate-100' : 'text-slate-400'}`}>
           {unit.title}
         </h3>
       </div>
-      {isUnlocked && <ChevronRightIcon className="w-6 h-6 text-slate-400 transform -scale-x-100" />}
+      {isClickable && <ChevronRightIcon className="w-6 h-6 text-slate-400 transform -scale-x-100" />}
     </div>
   );
 };
 
 const LevelScreen: React.FC<LevelScreenProps> = ({ level, onSelectUnit, onBack, isUnitCompleted }) => {
   return (
-    <div className="min-h-screen p-4">
+    <div className="min-h-screen p-4 sm:p-6 lg:p-8">
       <header className="relative text-center py-4 mb-8">
         <button onClick={onBack} className="absolute top-1/2 -translate-y-1/2 start-0 p-3 rounded-full bg-slate-700 shadow-md hover:bg-slate-600 transition">
           <ChevronRightIcon className="w-6 h-6 text-slate-200" />
@@ -54,7 +56,7 @@ const LevelScreen: React.FC<LevelScreenProps> = ({ level, onSelectUnit, onBack, 
           <h1 className="text-3xl font-bold text-slate-100">{level.title}</h1>
         </div>
       </header>
-      <main className="max-w-md mx-auto pt-4">
+      <main className="max-w-md md:max-w-2xl lg:max-w-4xl mx-auto pt-4">
         <div className="relative space-y-6">
           <div className="absolute top-8 bottom-8 left-1/2 -translate-x-1/2 w-1 bg-slate-700 rounded-full"></div>
           
