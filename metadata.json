@@ -1,7 +1,5 @@
 {
-  "name": "Copy of من أرحنا منها إلى أرحنا بها",
+  "name": "Copy of Copy of من أرحنا منها إلى أرحنا بها",
   "description": "تطبيق لتدرج الحضور في الصلاة، يأخذك في رحلة من 12 مستوى لتعميق صلتك ووعيك في الصلاة.",
-  "requestFramePermissions": [
-    "microphone"
-  ]
+  "requestFramePermissions": []
 }

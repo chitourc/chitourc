@@ -117,6 +117,10 @@ export const useProgress = () => {
     };
   }, [progress]);
 
+  const addPoints = useCallback((amount: number) => {
+    setPoints(p => p + amount);
+  }, []);
+
   const completeCard = useCallback((unitId: number, cardId: string) => {
     setProgress(prev => {
       const unitProgress = prev[unitId] || { completedCards: new Set(), exerciseCompleted: false, rewardClaimed: false };
@@ -184,6 +188,7 @@ export const useProgress = () => {
     claimReward,
     isUnitCompleted,
     isLevelCompleted,
-    completedUnitsCount
+    completedUnitsCount,
+    addPoints,
   };
 };

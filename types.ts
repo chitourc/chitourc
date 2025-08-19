@@ -5,16 +5,32 @@ export enum SectionType {
   Tactile = 'tactile',
 }
 
+export interface MotivationalQuestion {
+  question: string;
+  options: string[];
+  correct_option_index: number;
+}
+
 export interface Section {
   id: SectionType;
   title: string;
   content: string;
+  motivational_question?: MotivationalQuestion;
+}
+
+export interface QuizQuestion {
+  question: string;
+  options: string[];
+  correct_option_index: number;
+  explanation: string;
 }
 
 export interface Card {
   card_id: string;
   title: string;
   sections: Section[];
+  imageUrl?: string;
+  quiz?: QuizQuestion[];
 }
 
 export interface Exercise {
