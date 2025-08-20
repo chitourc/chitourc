@@ -4,31 +4,7 @@ import CheckCircleIcon from './icons/CheckCircleIcon';
 import XIcon from './icons/XIcon';
 import StarIcon from './icons/StarIcon';
 import ChevronLeftIcon from './icons/ChevronLeftIcon';
-
-// Preload sounds for instant playback
-const sounds = {
-  click: new Audio('https://storage.googleapis.com/assessment-miniapp-sounds/ui_tap-variant-01.mp3'),
-  correct: new Audio('https://archive.org/download/duolingo-correct-sound-effect/Duolingo%20Correct%20Sound%20Effect.mp3'),
-  incorrect: new Audio('https://archive.org/download/sound_67d4e77989005/sound_67d4e77989005.mp3'),
-  complete: new Audio('https://storage.googleapis.com/assessment-miniapp-sounds/achievement-chime.mp3'),
-};
-
-Object.values(sounds).forEach(sound => {
-    sound.preload = 'auto';
-});
-
-const playSound = (sound: keyof typeof sounds) => {
-    if (sounds[sound]) {
-        sounds[sound].currentTime = 0;
-        sounds[sound].play().catch(e => console.error(`Error playing sound: ${sound}`, e));
-    }
-};
-
-const playClickSound = () => playSound('click');
-const playCorrectSound = () => playSound('correct');
-const playIncorrectSound = () => playSound('incorrect');
-const playCompleteSound = () => playSound('complete');
-
+import { playSound } from '../utils/sounds';
 
 interface QuizModalProps {
   isOpen: boolean;
@@ -63,7 +39,6 @@ const QuizModal: React.FC<QuizModalProps> = ({ isOpen, onClose, questions, onCom
 
   const handleOptionClick = (index: number) => {
     if (!isAnswered) {
-      playClickSound();
       setSelectedOption(index);
     }
   };
@@ -73,18 +48,17 @@ const QuizModal: React.FC<QuizModalProps> = ({ isOpen, onClose, questions, onCom
     
     setIsAnswered(true);
     if (selectedOption === currentQuestion.correct_option_index) {
-      playCorrectSound();
+      playSound('correct');
       setScore(s => s + 1);
       const points = POINTS_PER_CORRECT_ANSWER;
       addPoints(points);
       setPointsEarned(p => p + points);
     } else {
-        playIncorrectSound();
+        playSound('incorrect');
     }
   };
 
   const handleNextQuestion = () => {
-    playClickSound();
     setIsAnswered(false);
     setSelectedOption(null);
     setCurrentQuestionIndex(i => i + 1);
@@ -134,7 +108,7 @@ const QuizModal: React.FC<QuizModalProps> = ({ isOpen, onClose, questions, onCom
               </div>
               <button 
                 onClick={() => {
-                    playCompleteSound();
+                    playSound('complete');
                     onComplete();
                 }}
                 className="w-full mt-8 px-6 py-4 rounded-xl bg-yellow-600 text-white font-bold text-lg shadow-lg transition-transform transform hover:scale-105"

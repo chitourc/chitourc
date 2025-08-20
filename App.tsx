@@ -1,13 +1,12 @@
-import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { appData } from './data/content';
-import type { Level, Unit } from './types';
+import type { Level } from './types';
 import HomeScreen from './screens/HomeScreen';
 import LevelScreen from './screens/LevelScreen';
 import UnitScreen from './screens/UnitScreen';
 import { useProgress } from './hooks/useProgress';
-import StarIcon from './components/icons/StarIcon';
-import FireIcon from './components/icons/FireIcon';
 import XIcon from './components/icons/XIcon';
+import AppHeader from './components/AppHeader';
 
 type Screen = 'home' | 'level' | 'unit';
 
@@ -97,48 +96,6 @@ const LoginModal: React.FC<{
         </div>
     );
 };
-
-
-const AppHeader: React.FC<{ points: number, streak: number, onTitleClick: () => void }> = ({ points, streak, onTitleClick }) => {
-    const clickTimeout = useRef<number | null>(null);
-    const clickCount = useRef(0);
-
-    const handleTitleClick = () => {
-        if (clickTimeout.current) {
-            clearTimeout(clickTimeout.current);
-        }
-        clickCount.current += 1;
-
-        if (clickCount.current >= 5) {
-            onTitleClick();
-            clickCount.current = 0;
-        } else {
-            clickTimeout.current = window.setTimeout(() => {
-                clickCount.current = 0;
-            }, 1500); // Reset after 1.5 seconds
-        }
-    };
-    
-    return (
-        <header className="fixed top-0 left-0 right-0 z-50 p-4 bg-gradient-to-b from-[#0A192F] to-transparent">
-            <div className="max-w-md md:max-w-2xl lg:max-w-4xl mx-auto flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-gold-royal cursor-pointer select-none" onClick={handleTitleClick}>رحلتي</h1>
-                <div className="flex items-center gap-4 bg-slate-800/80 backdrop-blur-sm shadow-md rounded-full px-4 py-2 border border-slate-700">
-                    <div className="flex items-center gap-1 font-bold text-yellow-300">
-                        <StarIcon className="w-5 h-5 text-yellow-400" />
-                        <span>{points}</span>
-                    </div>
-                    <div className="w-px h-5 bg-slate-600"></div>
-                    <div className="flex items-center gap-1 font-bold text-red-400">
-                        <FireIcon className="w-5 h-5 text-red-500" />
-                        <span>{streak}</span>
-                    </div>
-                </div>
-            </div>
-        </header>
-    );
-};
-
 
 const App: React.FC = () => {
   const [screen, setScreen] = useState<Screen>('home');
@@ -267,7 +224,13 @@ const App: React.FC = () => {
 
   return (
       <>
-        {screen === 'home' && <AppHeader points={progressHook.points} streak={progressHook.streak.count} onTitleClick={() => setShowLoginModal(true)} />}
+        <AppHeader 
+            points={progressHook.points} 
+            streak={progressHook.streak.count}
+            isAdmin={isAdmin}
+            onAdminClick={() => setShowLoginModal(true)}
+            onLogout={handleLogout}
+        />
         {renderScreen()}
         {showLoginModal && (
             <LoginModal 

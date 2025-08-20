@@ -3,15 +3,7 @@ import type { Level } from '../types';
 import LockIcon from '../components/icons/LockIcon';
 import ChevronRightIcon from '../components/icons/ChevronRightIcon';
 import ProgressBar from '../components/ProgressBar';
-
-// Preload the click sound to prevent delay on first interaction
-const clickSound = new Audio('https://storage.googleapis.com/assessment-miniapp-sounds/ui_tap-variant-01.mp3');
-clickSound.preload = 'auto';
-
-const playClickSound = () => {
-    clickSound.currentTime = 0;
-    clickSound.play().catch(e => console.error('Error playing click sound:', e));
-};
+import { playSound } from '../utils/sounds';
 
 interface HomeScreenProps {
   levels: Level[];
@@ -29,7 +21,7 @@ const LevelNode: React.FC<{
 
   return (
     <div
-      onClick={isUnlocked ? () => { playClickSound(); onClick(); } : undefined}
+      onClick={isUnlocked ? onClick : undefined}
       className={`relative p-5 rounded-2xl transition-all duration-300 transform border-2 
         ${!isUnlocked 
           ? 'bg-slate-800/50 border-slate-700 opacity-60' 

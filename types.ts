@@ -3,6 +3,7 @@ export enum SectionType {
   Tarbawi = 'tarbawi',
   Science = 'science',
   Tactile = 'tactile',
+  Summary = 'summary',
 }
 
 export interface MotivationalQuestion {
