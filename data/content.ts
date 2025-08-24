@@ -1,5 +1,7 @@
 import { type AppData } from '../types';
 import { levelOneData } from './levels/level_1';
+import { levelTwoData } from './levels/level_2';
+import { levelThreeData } from './levels/level_3';
 
 export const appData: AppData = {
   app: {
@@ -9,20 +11,8 @@ export const appData: AppData = {
   },
   levels: [
     levelOneData,
-    {
-      level_id: 2,
-      title: "أداءٌ صحيح ظاهرًا مع شرود القلب",
-      is_unlocked: false,
-      teaser: "هنا، ستنتقل من صحة الأداء الظاهري إلى تنظيم شرود ذهنك خطوة بخطوة.",
-      units: [],
-    },
-    {
-      level_id: 3,
-      title: "مجاهدة الوساوس مع تقلّب الحضور",
-      is_unlocked: false,
-      teaser: "هنا ستتعلم أدوات عملية للتعامل مع الوساوس والأفكار المقتحمة أثناء صلاتك.",
-      units: [],
-    },
+    levelTwoData,
+    levelThreeData,
     {
       level_id: 4,
       title: "التركيز على إتمام الصلاة ظاهرًا وباطنًا",

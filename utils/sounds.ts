@@ -1,8 +1,8 @@
 const soundUrls = {
   click: 'https://archive.org/download/mouse-click-sound-effect/mouse-click-sound-effect.mp3',
   correct: 'https://archive.org/download/duolingo-correct-sound-effect/Duolingo%20Correct%20Sound%20Effect.mp3',
-  incorrect: 'https://archive.org/download/sound_67d4e77989005/sound_67d4e77989005.mp3',
-  complete: 'https://archive.org/download/level-complete-sound-effect/level-complete-sound-effect.mp3',
+  incorrect: 'https://archive.org/download/wrong-answer-sound-effect/Wrong%20Answer%20Sound%20Effect.mp3',
+  complete: 'https://archive.org/download/level-up-sound-effect/level-up-sound-effect.mp3',
 };
 
 type SoundName = keyof typeof soundUrls;
